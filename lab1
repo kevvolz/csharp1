@@ -1,0 +1,181 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Lab1
+{
+    class Program
+    {
+        /// <summary>
+        ///  This is the main method of the program for Lab 1
+        /// </summary>
+        /// <param name="args">Command line arguments passed to the program</param>
+        static void Main(string[] args)
+        {
+            /* 
+             * The following code is for Lab 1: 
+             * 
+             * Basic Console Apps, Variables, Conversions and
+             * Mathematical Operations
+             * 
+             * C# Programming I: Fundamentals of C#
+             * UCSD Extension
+             * Course Number: CSE-40534
+             * Section ID: 130883
+             * Section Start and End Dates: 04/03/2018 - 05/15/2018
+             * Instructor: Bruce Schurter, B.S., MCSD       
+             */
+
+
+            // Prompt user to enter name in console.
+            #region Lab 1: Basic UI
+            string name = string.Empty;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write("Please enter your name: ");
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            name = Console.ReadLine();
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("Hello, " + name);    // TODO: check for empty strings or invalid entry
+
+            // Date of birth
+            string dobInput = string.Empty;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine();
+            Console.Write("Please enter your date of birth: ");
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            dobInput = Console.ReadLine();
+            Console.ForegroundColor = ConsoleColor.White;
+
+            DateTime dob = DateTime.MinValue;
+
+            if (DateTime.TryParse(dobInput, out dob))
+            {
+                Console.WriteLine("Your birthday is " + dob.ToShortDateString() +
+                    " which was a " + dob.DayOfWeek);
+            }
+            else
+            {
+                Console.WriteLine("That is an invalid birthday!");
+            }
+
+            // Favorite number
+            string favNumberInput = string.Empty;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine();
+            Console.Write("Please enter your favorite number: ");
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            favNumberInput = Console.ReadLine();
+            Console.ForegroundColor = ConsoleColor.White;
+
+            int favNum = int.MinValue;
+
+            if (int.TryParse(favNumberInput, out favNum))
+            {
+                Console.WriteLine("Your favorite number is " + favNum);
+
+            }
+            else
+            {
+                Console.WriteLine("That is not a number!");
+            }
+
+            // Desired salary
+            string salaryInput = string.Empty;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine();
+            Console.Write("Please enter your desired salary: ");
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            salaryInput = Console.ReadLine();
+            Console.ForegroundColor = ConsoleColor.White;
+
+            double salary = double.MinValue;
+
+            if (double.TryParse(salaryInput, out salary))
+            {
+                Console.WriteLine("Your desired salary is " + salary + ". Are you sure it's not " + (salary * 2) + "?");
+            }
+            else
+            {
+                Console.WriteLine("That is not a valid salary!");
+            }
+
+            // Employment status
+            string employedInput = string.Empty;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine();
+            Console.Write("Are you employed? (true/false): ");
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            employedInput = Console.ReadLine();
+            Console.ResetColor();
+
+            bool employed = true;
+            // Check if entered value is boolean
+            if (bool.TryParse(employedInput, out employed))
+            {
+                Console.WriteLine("You entered " + employed);
+                if (employedInput == "true")
+                {
+                    Console.WriteLine("Now get to work!");
+                }
+                else
+                {
+                    Console.WriteLine("Get a job!");
+                }
+                if ()
+            }
+            else
+            {
+                Console.WriteLine("Invalid entry!");
+            }
+            #endregion Lab 1: Basic UI
+
+
+            Console.WriteLine();    // Add spacing
+            Console.WriteLine();
+
+            /* Mathematical Operations
+             * Lab 1.2
+             */
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("Mathematical Operations");
+            Console.ResetColor();
+            
+
+            // Problem #1
+            double width = 6.5, height = 3;
+            // Calculate area for rectangle
+            double area = width * height;
+            Console.WriteLine();
+            Console.WriteLine("#1: " + area);
+
+            // Problem #2
+            double radius = 7.1, pi = Math.PI;
+            // Calculate area for circle
+            double circleArea = pi * (radius * radius);
+            Console.WriteLine();
+            Console.WriteLine("#2: " + circleArea);
+
+            // Problem #3
+            double x1a = 2, y1a = 5, x1b = -3, y1b = 7,
+                   x2a = -5, y2a = 4, x2b = 1, y2b = 0,
+                   x3a = 6, y3a = -2, x3b = -4, y3b = -6;
+            // Calculate distance between two point pairs
+            double dist1 = Math.Sqrt((Math.Pow((x1b - x1a), 2)) + Math.Pow((y1b - y1a), 2));
+            Console.WriteLine();
+            Console.WriteLine("#3A: " + dist1);
+            double dist2 = Math.Sqrt((Math.Pow((x2b - x2a), 2)) + Math.Pow((y2b - y2a), 2));
+            Console.WriteLine("#3B: " + dist2);
+            double dist3 = Math.Sqrt((Math.Pow((x3b - x3a), 2)) + Math.Pow((y3b - y3a), 2));
+            Console.WriteLine("#3C: " + dist3);
+
+
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.Write("Press <ENTER> to quit...");
+            Console.ReadLine();
+        }
+    }
+}
