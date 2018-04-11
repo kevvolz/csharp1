@@ -123,7 +123,6 @@ namespace Lab1
                 {
                     Console.WriteLine("Get a job!");
                 }
-                if ()
             }
             else
             {
