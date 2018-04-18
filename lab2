@@ -1,0 +1,137 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Lab2
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            ArrayTest();
+            ListTest();
+            StringFormatting();
+            Console.Write("Press <Enter> to quit...");
+            Console.ReadLine();
+        }
+
+        static void ArrayTest()
+        {
+            Console.WriteLine("ArrayTest()");
+            Console.Write("Please enter 5 numbers, separated by commas: ");
+            string input = Console.ReadLine();
+            string[] inputs = input.Split(',');
+            double[] values = new double[5];
+
+            values[0] = double.Parse(inputs[0]);
+            values[1] = double.Parse(inputs[1]);
+            values[2] = double.Parse(inputs[2]);
+            values[3] = double.Parse(inputs[3]);
+            values[4] = double.Parse(inputs[4]);
+            Array.Sort(values);
+            Console.Write("Values: ");
+            foreach (double j in values)
+            {
+                Console.Write(j + " ");
+            }
+            double min = values.Min();
+            double max = values.Max();
+            double sum = values.Sum();
+            double average = values.Average();
+            Console.WriteLine();
+            Console.WriteLine("Min: " + min);
+            Console.WriteLine("Max: " + max);
+            Console.WriteLine("Sum: " + sum);
+            Console.WriteLine("Average: " + average);
+            // Add lines to separate parts
+            Console.WriteLine();
+            Console.WriteLine();
+        }
+
+        static void ListTest()
+        {
+            Console.WriteLine("ListTest()");
+            List<string> words = new List<string>();
+            Console.Write("Continue entering one word at a time at the prompt.  ");
+            Console.WriteLine("Enter 'q' to quit.");
+            while (true)
+            {
+                // TODO: Add word reading code here...
+
+                Console.Write("Word: ");
+                string word = Console.ReadLine();
+                // Console.WriteLine(word);
+
+                if (word.ToUpper() == "Q")
+                {
+                    break;
+                }
+                else
+                {
+                    words.Add(word);
+                }
+            }
+            //TODO: Add string join code here...
+            string join = string.Join(" ", words);
+            Console.WriteLine(join);
+            // Add lines to separate parts
+            Console.WriteLine();
+            Console.WriteLine();
+        }
+
+        // String Formatting
+        private static void StringFormatting()
+        {
+            Console.WriteLine("StringFormatting()");
+
+            string partTitle = "Part #", 
+                   partNameTitle = "Part Name", 
+                   priceTitle = "Price", 
+                   phoneTitle = "Phone", 
+                   mfgTitle = "MFG Date";
+            string partTitlePad = partTitle.PadRight(partTitle.Length + 5), 
+                   partNameTitlePad = partNameTitle.PadRight(partNameTitle.Length + 12), 
+                   priceTitlePad = priceTitle.PadLeft(priceTitle.Length + 9).PadRight(priceTitle.Length + 10), 
+                   phoneTitlePad = phoneTitle.PadRight(phoneTitle.Length + 9),
+                   mfgTitlePad = mfgTitle.PadRight(mfgTitle.Length + 1);
+
+            // Splitter for header
+            string linesplit = new string('=', 71);
+
+            Console.WriteLine(partTitlePad + partNameTitlePad + priceTitlePad + phoneTitlePad + mfgTitlePad);
+            Console.WriteLine(linesplit);
+            //Console.WriteLine("01234567890123456789012345678901234567890123456789012345678901234567890");
+
+            //Declare variables
+            int partNumber, pnum2 = 123, pnum3 = 999999, pnum4 = 98765432, pnum5 = 987654321;
+            string partName, pnam2 = "Grain", pnam3 = "Hops", pnam4 = "Yeast", pnam5 = "Water";
+            decimal price, p2 = 10000, p3 = 999999999, p4 = 55555, p5 = 444499;
+            long servicePhone, sp2 = 7148675309, sp3 = 9999999999, sp4 = 9091234567, sp5 = 4443337878;
+            DateTime mfgDate, d2 = DateTime.Parse("January 5, 1986"), d3 = DateTime.Parse("January 22, 2016"), d4 = DateTime.Parse("August 26, 2017"), d5 = DateTime.Parse("March 12, 1986");
+
+            partNumber = 123456789;
+            partName = "Flux Capacitor";
+            price = 543456.12M;
+            servicePhone = 8005551212;
+            mfgDate = DateTime.Parse("February 1, 1985");
+
+            string fmt = string.Format("{0,-9:00-0000000} {1,-14} {2,20:C} {3,-10:(000)000-0000} {4,-10:yyyy-MM-dd}", partNumber, partName, price, servicePhone, mfgDate);
+            string fmt2 = string.Format("{0,-9:00-0000000} {1,-14} {2,20:C} {3,-10:(000)000-0000} {4,-10:yyyy-MM-dd}", pnum2, pnam2, p2, sp2, d2);
+            string fmt3 = string.Format("{0,-9:00-0000000} {1,-14} {2,20:C} {3,-10:(000)000-0000} {4,-10:yyyy-MM-dd}", pnum3, pnam3, p3, sp3, d3);
+            string fmt4 = string.Format("{0,-9:00-0000000} {1,-14} {2,20:C} {3,-10:(000)000-0000} {4,-10:yyyy-MM-dd}", pnum4, pnam4, p4, sp4, d4);
+            string fmt5 = string.Format("{0,-9:00-0000000} {1,-14} {2,20:C} {3,-10:(000)000-0000} {4,-10:yyyy-MM-dd}", pnum5, pnam5, p5, sp5, d5);
+
+            Console.WriteLine(fmt);
+            Console.WriteLine(fmt2);
+            Console.WriteLine(fmt3);
+            Console.WriteLine(fmt4);
+            Console.WriteLine(fmt5);
+
+
+
+        }
+
+    }
+}
