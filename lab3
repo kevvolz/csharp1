@@ -14,8 +14,9 @@ namespace Lab3
 
             while (choice.ToLower() != "q") // Checks for choice NOT equal to "q" or "Q"
             {
-                Console.ForegroundColor = ConsoleColor.White;
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("Please choose an activity:");
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("  A. Making change");
                 Console.WriteLine("  B. Counting letters");
                 Console.WriteLine("  C. Number guessing game");
