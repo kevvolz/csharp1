@@ -1,0 +1,127 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Lab3
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string choice = string.Empty;
+
+            while (choice.ToLower() != "q") // Checks for choice NOT equal to "q" or "Q"
+            {
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("Please choose an activity:");
+                Console.WriteLine("  A. Making change");
+                Console.WriteLine("  B. Counting letters");
+                Console.WriteLine("  C. Number guessing game");
+                Console.WriteLine("  D. Quit");
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.Write("Your choice: ");
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                choice = Console.ReadLine();
+                Console.ForegroundColor = ConsoleColor.White;
+
+                switch (choice)
+                {
+                    case "A": case "a":
+                        MakingChange();
+                        break;
+                    case "B": case "b":
+                        CountingLetters();
+                        break;
+                    case "C": case "c":
+                        NumberGuessingGame();
+                        break;                     
+                }
+            }
+        }
+
+        private static void MakingChange()
+        {
+            string due = string.Empty;
+            string paid = string.Empty;
+            decimal dueAmount = 0;
+            decimal paidAmount = 0;
+
+            // loop for valid user input
+            while (true)
+            {
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.WriteLine("Please enter the amount due: ");
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                due = Console.ReadLine();
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.WriteLine("Please enter the amount paid: ");
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                paid = Console.ReadLine();
+                Console.ForegroundColor = ConsoleColor.White;
+
+                if (decimal.TryParse(due, out decimal result1) && decimal.TryParse(paid, out decimal result2))
+                {
+                    dueAmount = decimal.Parse(due);
+                    paidAmount = decimal.Parse(paid);
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Both inputs must be decimal type. Please try again.");
+                }
+            }
+
+            // If paid less than due, tell user
+            if (paidAmount < dueAmount)
+            {
+                Console.WriteLine("You did not pay enough.");
+            }
+            // if paid equal to due, tell user
+            else if (paidAmount == dueAmount)
+            {
+                Console.WriteLine("No change due.");
+            }
+            else
+            {
+                decimal change = paidAmount - dueAmount;
+                decimal[] denominations = { 100M, 50M, 20M, 10M, 5M, 1M, 0.50M, 0.25M, 0.10M, 0.05M, 0.01M };
+                int[] counts = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+                int index = 0;
+                Console.WriteLine("current change: " + change);
+                while (change > 0)
+                {
+                    Console.WriteLine("denom: " + denominations[index]);
+                    if (change >= denominations[index])
+                    {
+                        counts[index] += 1;
+                        change -= denominations[index];
+                    }
+                    else
+                    {
+                        index += 1;
+                    }
+                }
+                foreach (int ints in counts) Console.WriteLine(ints);
+            }
+
+            /*
+            Console.WriteLine("Due: {0}", due);
+            Console.WriteLine("Pay: {0}", paid);
+
+            Console.WriteLine("The following change is due: $");
+            */
+        }
+
+        private static void CountingLetters()
+        {
+
+        }
+
+        private static void NumberGuessingGame()
+        {
+
+        }
+    }
+}
