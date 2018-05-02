@@ -1,0 +1,251 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Lab4
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Statistics();
+            Coordinates();
+            SumOfSquares();
+
+            Console.WriteLine();
+            Console.Write("Press <Enter> to quit...");
+            Console.ReadLine();
+        }
+
+
+        // Part 1: Statistics
+        static void Statistics()
+        {
+            int[] values = { 1, 6, 4, 7, 9, 2, 5, 7, 2, 6, 5, 7, 8, 1, 2, 8 };
+            int[] values2 = { 1, 4, 5, 6, 7, 9, 10 };
+            // Write input list
+            Console.WriteLine("Data: " + String.Join(", ", values));
+            // Call Mean method
+            double mean = Mean(values);
+            Console.WriteLine($"Mean: {mean}");
+            // Call Median method
+            double median = Median(values);
+            Console.WriteLine($"Median: {median}");
+            // Call Mode method
+            List<int> mode = new List<int>();
+            mode = Mode(values);
+            Console.WriteLine("Mode: " + String.Join(", ", mode));
+            Console.WriteLine();
+        }
+
+        static double Mean(int[] values)
+        {
+            if (values == null || values.Length == 0) return double.NaN;
+            int sum = 0;
+            for (int i = 0; i < values.Length; ++i)
+            {
+                sum += values[i];
+            }
+            return ((double)sum / values.Length);
+        }
+
+        static double Median(int[] values)
+        {
+            //double evenValue = 0;
+            if (values == null || values.Length == 0) return double.NaN;
+            // Make a copy of the array
+            int[] sorted = new int[values.Length];
+            values.CopyTo(sorted, 0);
+            // Sort array
+            Array.Sort(sorted);
+            // If length is odd
+            if(sorted.Length % 2 == 1)
+            {
+                double medianValue = sorted[sorted.Length / 2];
+                return medianValue;
+            }
+            //if length is even
+            else
+            {
+                double medianValue = ((double)sorted[(sorted.Length / 2)-1] + (double)sorted[sorted.Length / 2]) / 2; // Average two middle values
+                return medianValue;
+            }
+        }
+
+        static List<int> Mode(int[] values)
+        {
+            // Create new list
+            List<int> result = new List<int>();
+            if (values == null || values.Length == 0) return result;
+            // Make a copy of the array
+            int[] sorted = new int[values.Length];
+            values.CopyTo(sorted, 0);
+            // Sort array
+            Array.Sort(sorted);
+            // Create new dict
+            var counts = new Dictionary<int, int>(); // <key type, value type>
+            // Keep track of highest frequency count
+            int max = 0;
+            foreach (int key in sorted)
+            {
+                int count = 1;
+                if (counts.ContainsKey(key))
+                {
+                    count += counts[key];
+                    counts[key] = count;
+                    if (count > max)
+                    {
+                        max = count;
+                    }
+                }
+                counts[key] = count;
+            }
+            // Loop through keys of dict and add to result
+            foreach (var key in counts.Keys)
+            {
+                if (counts[key] == max)
+                {
+                    int medianVal = key;
+                    result.Add(medianVal);
+                }
+            }
+            return result;
+        }
+
+        // Part 2: Rectangular to Polar
+        static void Coordinates()
+        {
+            Console.Write("Enter a coordinate in the form (x, y): ");
+            string input = Console.ReadLine();
+            double x, y;
+            if (TryParsePoint(input, out x, out y))
+            {
+                var polar = RectangularToPolar(x, y);
+                Console.WriteLine($"r: {polar.Item1}, angle: {polar.Item2} radians");
+                Console.WriteLine($"r: {polar.Item1}, angle: {RadiansToDegrees(polar.Item2)}°");
+                Console.WriteLine();
+            }
+        }
+
+        static bool TryParsePoint(string input, out double x, out double y)
+        {
+            x = 0;
+            y = 0;
+            input.Trim();
+            if (input.StartsWith("(") || input.EndsWith(")") || input.Contains(","))
+            {
+                input = input.TrimStart('(').TrimEnd(')');
+                string[] split = input.Split(',');
+                if (split.Length == 2)
+                {
+                    //foreach (string s in split) Console.WriteLine(s);
+                    if (double.TryParse(split[0], out x))
+                    {
+                        if (double.TryParse(split[1], out y))
+                        {
+                            return true;
+                        }
+                        else return false;
+                    }
+                    else return false;
+                }
+                else return false;
+            }
+            else return false;
+        }
+
+        static Tuple<double, double> RectangularToPolar(double x, double y)
+        {
+            // Point is on origin
+            if (x == 0 && y == 0)
+            {
+                var t = new Tuple<double, double>(0, 0);
+                return t;
+            }
+            // Point is on positive X axis
+            else if (x > 0 && y == 0)
+            {
+                var t = new Tuple<double, double>(x, 0);
+                return t;
+            }
+            // Point is on positive Y axis
+            else if (x == 0 && y > 0)
+            {
+                var t = new Tuple<double, double>(y, (Math.PI / 2));
+                return t;
+            }
+            // Point is on negative X axis
+            else if (x < 0 && y == 0)
+            {
+                var t = new Tuple<double, double>(Math.Abs(x), Math.PI);
+                return t;
+            }
+            // Point is on negative Y axis
+            else if (x == 0 && y < 0)
+            {
+                var t = new Tuple<double, double>(Math.Abs(y), ((3 * Math.PI) / 2));
+                return t;
+            }
+            // Point is in Quadrant I
+            else if (x > 0 && y > 0)
+            {
+                var t = new Tuple<double, double>((Math.Sqrt(x * x + y * y)), (Math.Atan((y / x))));
+                return t;
+            }
+            // Point is in Quadrant II or Quadrant III
+            else if (x < 0 && y > 0 || x < 0 && y < 0
+                )
+            {
+                var t = new Tuple<double, double>((Math.Sqrt(x * x + y * y)), (Math.PI + Math.Atan((y / x))));
+                return t;
+            }
+            // Point is in Quadrant IV
+            else //(x > 0 && y < 0)
+            {
+                var t = new Tuple<double, double>((Math.Sqrt(x * x + y * y)), ((2 * Math.PI) + Math.Atan((y / x))));
+                return t;
+            }
+        }
+
+        static double RadiansToDegrees(double radians)
+        {
+            double degrees = radians * (180 / Math.PI);
+            if (degrees >= 360)
+            {
+                while (degrees > 360)
+                {
+                    degrees -= 360;
+                }
+            }
+            if (degrees < 0)
+            {
+                while (degrees < 0)
+                {
+                    degrees += 360;
+                }
+            }
+            return degrees;
+        }
+
+
+        // Part 3: Sum of Squares
+        static void SumOfSquares()
+        {
+            Console.Write("Enter an int: ");
+            string input = Console.ReadLine();
+            if (int.TryParse(input, out int squareNum))
+            {
+                long output = Squares(squareNum);
+                Console.WriteLine("The sum of squares for {0} is {1}", squareNum, output);
+                return;
+            }
+            else return;
+        }
+        static long Squares(long value)
+        {
+            return (value > 1) ? value * value + Squares(value - 1) : 1;
+        }
+    }
+}
