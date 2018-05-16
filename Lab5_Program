@@ -1,0 +1,180 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Lab55
+{
+    enum MenuOptions { DisplayCities, CityDistances, Quit };
+
+    class Program
+    {
+
+        static List<City> cities = new List<City>();
+
+        static List<City> Add()
+        {
+            Geolocation ci1 = new Geolocation(32.71513M, -117.1611M);
+            Geolocation ci2 = new Geolocation(37.78352M, -122.4169M);
+            Geolocation ci3 = new Geolocation(34.04983M, -118.2498M);
+            Geolocation ci4 = new Geolocation(40.71015M, -74.00658M);
+            Geolocation ci5 = new Geolocation(51.51786M, -0.102216M);
+            Geolocation ci6 = new Geolocation(-33.86767M, 151.2094M);
+
+            City city1 = new City
+            {
+                Name = "San Diego",
+                Province = "CA",
+                Country = "USA",
+                Location = ci1
+            };
+            City city2 = new City
+            {
+                Name = "San Francisco",
+                Province = "CA",
+                Country = "USA",
+                Location = ci2
+            };
+            City city3 = new City
+            {
+                Name = "Los Angeles",
+                Province = "CA",
+                Country = "USA",
+                Location = ci3
+            };
+            City city4 = new City
+            {
+                Name = "New York",
+                Province = "CA",
+                Country = "USA",
+                Location = ci4
+            };
+            City city5 = new City
+            {
+                Name = "London",
+                Province = "London",
+                Country = "England",
+                Location = ci5
+            };
+            City city6 = new City
+            {
+                Name = "Sydney",
+                Province = "NSW",
+                Country = "Australia",
+                Location = ci6
+            };
+            cities.Add(city1);
+            cities.Add(city2);
+            cities.Add(city3);
+            cities.Add(city4);
+            cities.Add(city5);
+            cities.Add(city6);
+            return cities;
+        }
+
+
+        static void Main(string[] args)
+        {
+            List<City> _cities = Add();
+
+            MenuOptions choice = MenuOptions.Quit;
+
+            do
+            {
+                Console.WriteLine("Please choose from the following menu options");
+                var menuChoices = Enum.GetValues(typeof(MenuOptions));
+                foreach (var item in menuChoices)
+                {
+                    Console.WriteLine($"  [{item:D}] {item:G}");
+                }
+                var lengthChoices = Enum.GetValues(typeof(LengthTypes));
+
+                Console.Write("Your choice: ");
+                string input = Console.ReadLine();
+                if (Enum.TryParse(input, true, out choice))
+                {
+                    switch (choice)
+                    {
+                        // Display Cities
+                        case MenuOptions.DisplayCities:
+                            City.PrintHeader();
+                            foreach (var city in _cities)
+                            {
+                                city.Print();
+                            }
+                            break;
+
+                        case MenuOptions.CityDistances:
+                            int index = 0, index2 = 0;
+                            int len = 0;
+                            int firstCityIndex = 0;
+                            int secondCityIndex = 0;
+                            LengthTypes lType = LengthTypes.Meters;
+                            Console.WriteLine();
+                            Console.WriteLine("City List:");
+
+                            foreach (var city in _cities)
+                            {
+                                Console.Write($"  {index}. ");
+                                city.PrintCity();
+                                index += 1;
+                            }
+
+                            len = index;
+
+                            Console.Write("Enter first city number: ");
+                            string input1 = Console.ReadLine();
+                            if (int.TryParse(input1, out index))
+                            {
+                                firstCityIndex = int.Parse(input1);
+                                if (firstCityIndex >= 0 && firstCityIndex <= len)
+                                {
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+                            Console.Write("Enter second city number: ");
+                            string input2 = Console.ReadLine();
+                            if (int.TryParse(input2, out index))
+                            {
+                                secondCityIndex = int.Parse(input2);
+                                if (secondCityIndex >= 0 && secondCityIndex <= len)
+                                {
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+
+                            Console.WriteLine();
+                            Console.WriteLine("Please select a unit of measurement");
+                            foreach (var length in lengthChoices)
+                            {
+                                Console.WriteLine($"  [{length:D}] {length:G}");
+                            }
+                            Console.Write("Your choice: ");
+                            string lenInput = Console.ReadLine();
+                            if (Enum.TryParse(lenInput, true, out lType))
+                            {
+                            }
+                            else
+                            {
+                                break;
+                            }
+
+                            City firstCity = _cities[firstCityIndex];
+                            City secondCity = _cities[secondCityIndex];
+                            decimal d = firstCity.Distance(secondCity, lType);
+                            Console.WriteLine($"The distance between {firstCity.Name} and {secondCity.Name} is {d} {lType}");
+                            break;
+                            
+                    }
+                }
+            } while (choice != MenuOptions.Quit);
+        }
+    }
+}
