@@ -1,0 +1,126 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Lab55
+{
+    public struct Geolocation
+    {
+        public readonly decimal Latitude;
+        public readonly decimal Longitude;
+
+        public Geolocation(decimal latitude, decimal longitude)
+        {
+            // Catch bad values
+            try
+            {
+                if (latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180)
+                {
+                    throw new ArgumentOutOfRangeException("Latitude or longitude out of acceptable range.");
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+            Latitude = latitude;
+            Longitude = longitude;
+        }
+
+        public Geolocation(Geolocation other)
+        {
+            Latitude = other.Latitude;
+            Longitude = other.Longitude;
+        }
+
+        // Return string representation of Degrees-Minutes-Seconds
+        public string DMS()
+        {
+            decimal d = decimal.Truncate(Math.Abs(Latitude));
+            decimal ms = (Math.Abs(Latitude) - d) * 60;
+            decimal m = decimal.Truncate(ms);
+            decimal s = (ms - m) * 60;
+            s = Math.Round(s, 0);
+
+            decimal dlong = decimal.Truncate(Math.Abs(Longitude));
+            decimal mslong = (Math.Abs(Longitude) - dlong) * 60;
+            decimal mlong = decimal.Truncate(mslong);
+            decimal slong = (mslong - mlong) * 60;
+            slong = Math.Round(slong, 0);
+            // Calc North or South, East or West
+            string ns;
+            string ew;
+            if (Latitude > 0)
+            {
+                ns = "N";
+            }
+            else
+            {
+                ns = "S";
+            }
+            if (Longitude > 0)
+            {
+                ew = "E";
+            }
+            else
+            {
+                ew = "W";
+            }
+
+            string returnString = ($"{d,2}\u00B0{m,2}'{s,2}\"{ns} {dlong,3}\u00B0{mlong,2}'{slong,2}\"{ew}");
+            return returnString;
+        }
+
+        public decimal GreatCircleDistance(Geolocation other, LengthTypes lengthType = LengthTypes.Meters)
+        {
+            double lat1 = ToRadians((double)Latitude);
+            double lng1 = ToRadians((double)Longitude);
+            double lat2 = ToRadians((double)other.Latitude);
+            double lng2 = ToRadians((double)other.Longitude);
+
+            double latDiff = lat1 - lat2;
+            double lngDiff = lng1 - lng2;
+
+            double sin2Lat = Math.Pow(Math.Sin(latDiff / 2), 2);
+            double sin2Lng = Math.Pow(Math.Sin(lngDiff / 2), 2);
+
+            double a = sin2Lat + Math.Cos(lat1) * Math.Cos(lat2) * sin2Lng;
+
+            // step 5
+            double arcLength = 2 * Math.Asin(Math.Min(1, Math.Sqrt(a)));
+
+            double distance = 6371000 * arcLength;
+
+            double result = 0;
+
+            // Handle different length types
+            if (lengthType == LengthTypes.Meters)
+            {
+                result = distance;
+            }
+            if (lengthType == LengthTypes.Kilometers)
+            {
+                result = distance * 0.001;
+            }
+            if (lengthType == LengthTypes.Feet)
+            {
+                result = distance * 3.2808399;
+            }
+            if (lengthType == LengthTypes.Miles)
+            {
+                result = distance * 0.00062137199;
+            }
+            decimal resultFormatted = (decimal)result;
+            resultFormatted = Math.Round(resultFormatted, 1);
+            return resultFormatted;
+        }
+
+        private static double ToRadians(double degreeVal)
+        {
+            return (degreeVal * (Math.PI / 180.0));
+        }
+    }
+}
